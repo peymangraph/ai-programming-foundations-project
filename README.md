@@ -16,7 +16,7 @@ The broader continuation of this maintenance-intelligence project is maintained 
 
 **Dataset:** Synthetic CMMS Maintenance Work Orders
 
-The dataset is generated for academic use and contains simulated maintenance work-order records. It does not contain real customer, employee, technician, property, or asset data.
+The dataset is generated for academic use and contains simulated maintenance work-order records. It does not contain real customer, employee, technician, property, or asset data. The notebook uses the repository's deterministic generator to create the CSV with a fixed random seed when the file is not already present.
 
 ## How to Run the Project
 
@@ -56,6 +56,12 @@ The project uses a documented dependency file and Git version control. To regene
 ```bash
 pip freeze > requirements.txt
 ```
+
+## Development History
+
+This repository is a focused, rubric-compliant extraction of the first stage of a larger maintenance-intelligence capstone. The original work was developed iteratively in the broader [maintenance-ml-priority-prediction](https://github.com/peymangraph/maintenance-ml-priority-prediction) repository, which contains the extended statistical analysis, applied machine learning, NLP, and integration work. This dedicated repository keeps the Project 1 submission concise while preserving a direct link to the broader engineering history.
+
+The submission repository itself also includes multiple commits and an additional `feature/data-workflow` branch to demonstrate version-controlled development for this module.
 
 ## Submission Files
 
