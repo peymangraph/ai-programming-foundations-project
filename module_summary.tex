@@ -1,0 +1,72 @@
+\documentclass[12pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{times}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{microtype}
+\doublespacing
+\setlength{\parindent}{0.5in}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue,citecolor=black,pdftitle={AI Programming Foundations Project: Module Summary},pdfauthor={Peyman Mohammad Hassan}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{\small AI Programming Foundations Project | Peyman Mohammad Hassan}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headheight}{15pt}
+\titleformat{\section}{\normalfont\bfseries\centering\fontsize{12}{14}\selectfont}{}{0pt}{}
+\begin{document}
+\thispagestyle{fancy}
+\vspace*{1.7in}
+\begin{center}
+{\bfseries AI Programming Foundations Project: Module Summary\par}
+\vspace{0.35in}
+Peyman Mohammad Hassan\par
+Maintenance Work Order Data Workflow
+\end{center}
+\newpage
+\begin{center}{\bfseries AI Programming Foundations Project: Module Summary}\end{center}
+
+\section*{Overview}
+This project builds a professional, reproducible data workflow in Python using a synthetic computerized maintenance management system (CMMS)-style work-order dataset. The workflow generates the data deterministically, loads it with Pandas, applies reusable cleaning functions, performs exploratory data analysis (EDA), creates interpretable visualizations, and documents assumptions, limitations, and reproducibility practices. The dataset is intended solely for academic use and contains no real customer, employee, property, technician, or asset records.
+
+\section*{Dataset Description}
+The dataset represents simulated maintenance work orders that might appear in a facilities or asset-management system. The generator creates 8,000 base work orders and intentionally injects duplicates and data-quality defects, producing 8,040 raw rows before cleaning. After duplicate removal and cleaning, the workflow retains 8,000 work orders with 18 columns. Key variables include asset type, asset age, asset condition, asset criticality, maintenance type, issue type, previous failures, days since last service, preventive-maintenance overdue days, occupancy impact, safety-related status, estimated repair cost, resolution hours, and work-order priority. The synthetic dataset is generated from project code, making the source reproducible without exposing sensitive operational records. The focused Project 1 submission is maintained at \url{https://github.com/peymangraph/ai-programming-foundations-project}, while the broader continuation is maintained at \url{https://github.com/peymangraph/maintenance-ml-priority-prediction}.
+
+\section*{Workflow Description}
+The workflow proceeds through ingestion, cleaning, exploratory analysis, visualization, and summary. During ingestion, the notebook ensures that the synthetic CSV exists, loads it with Pandas, displays the first rows, and inspects dimensions, data types, missing values, duplicates, and category counts. During cleaning, reusable functions standardize inconsistent categorical labels, remove duplicate work-order IDs, identify documented impossible or injected out-of-range values, and impute selected missing fields. The raw dataset remains unchanged while the cleaned result is saved separately. EDA functions summarize priority frequencies, compare asset categories, examine operational variables across priority groups, and filter a transparent subset of work orders with repeated failures and overdue preventive maintenance. Four labeled visualizations communicate key descriptive patterns, and each figure is followed by a written interpretation.
+
+\section*{Key Decisions and Assumptions}
+A central design decision was to keep the computational workflow explicit and reproducible rather than performing undocumented manual edits. Reproducible data-science practice depends on making analytical steps, software dependencies, and decisions sufficiently transparent for others to rerun and inspect the work (Danchev, 2022). This principle motivated deterministic data generation, reusable functions, dependency documentation, version control, and visible before-and-after quality checks.
+
+Categorical values such as variations of HVAC were standardized so equivalent labels would not be treated as separate groups. Duplicate work-order IDs were removed because retaining them would double-count maintenance events and could distort frequency, cost, and priority summaries. Missing asset condition is represented as ``Unknown'' rather than inventing a condition. Selected numeric missing values are imputed using group medians with an overall median fallback. Data cleaning should be documented as part of the analytical process, including how errors, missingness, and unusual observations are identified and handled (Van den Broeck et al., 2005).
+
+The plots were selected to answer distinct descriptive questions: how priority is distributed, whether maintenance history varies with priority, whether typical cost differs by asset type, and how resolution time behaves across priority groups. Because the dataset is synthetic and its relationships are intentionally designed, visual patterns are treated as demonstrations of the workflow rather than causal evidence about real facilities.
+
+\section*{Results and Interpretation}
+The workflow converts a deliberately imperfect raw dataset into a consistent, analysis-ready dataset. Duplicate records are removed, category labels are normalized, documented invalid values are handled, and selected missing values are imputed while the original raw data remain available for comparison. The cleaned priority distribution contains 1,756 Low, 3,693 Medium, 1,997 High, and 554 Emergency work orders. Medium work orders form the largest priority class, while Emergency work orders are intentionally much less common. The notebook also examines previous failures by priority, median estimated repair cost by asset type, and resolution-time distributions. These relationships are useful for demonstrating EDA but must not be interpreted as real-world causal evidence because the data are synthetic.
+
+\section*{Responsible Practice}
+Data cleaning is not automatically neutral. Removing every record with a missing field could disproportionately remove certain asset categories, facilities, or priority levels if documentation quality differs systematically among groups. Imputation also changes the observed distribution. Careful data-cleaning practice therefore requires explicit examination and documentation of abnormalities rather than treating cleaning as an invisible preprocessing step (Van den Broeck et al., 2005). The workflow keeps the raw dataset unchanged, documents each cleaning rule, preserves rows where practical, and compares raw and cleaned quality indicators.
+
+The use of synthetic data eliminates the risk of exposing real customer or employee records, but it creates an important limitation: observed patterns reflect assumptions encoded in the data generator. Before operational use, cleaning thresholds, category definitions, missing-data behavior, and observed relationships would need validation using representative real data and appropriate governance.
+
+\section*{Limitations}
+The principal limitation of this project is that the dataset is synthetic. Although synthetic data are appropriate for demonstrating a safe and reproducible programming workflow, the distributions and relationships in the dataset are influenced by assumptions encoded in the generator. Consequently, the observed associations cannot establish how real facilities, assets, technicians, or maintenance programs behave. The results should therefore be interpreted as evidence that the workflow functions correctly, not as externally validated operational findings.
+
+A second limitation concerns missing-data treatment. Group-median imputation is transparent and robust to extreme values, but it can reduce natural variability and may conceal systematic missingness. A production analysis would investigate why values are missing and compare alternative strategies before selecting an imputation method. Similarly, category standardization assumes that differently written labels truly represent the same operational concept; real deployment would require confirmation from domain experts and an authoritative data dictionary.
+
+\section*{Reproducibility}
+Another reviewer can rerun the workflow from the repository by installing the documented dependencies from \texttt{requirements.txt} and executing the notebook from top to bottom. The synthetic generator uses a fixed random seed so the generated dataset is deterministic. Git preserves the development history through multiple commits and an additional development branch beyond main. The dedicated submission repository is a focused extraction of earlier work that was developed and extended in the linked broader capstone repository; this preserves a clean rubric-facing submission while still making the wider engineering history visible. These practices support computational reproducibility by connecting code, environment information, data-generation logic, and analytical decisions in a rerunnable workflow (Danchev, 2022).
+
+\section*{References}
+Danchev, V. (2022). Reproducible data science with Python: An open learning resource. \textit{Journal of Open Source Education, 5}(56), 156. \url{https://doi.org/10.21105/jose.00156}
+
+Van den Broeck, J., Cunningham, S. A., Eeckels, R., \& Herbst, K. (2005). Data cleaning: Detecting, diagnosing, and editing data abnormalities. \textit{PLoS Medicine, 2}(10), e267. \url{https://doi.org/10.1371/journal.pmed.0020267}
+\end{document}
