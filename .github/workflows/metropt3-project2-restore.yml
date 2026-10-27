@@ -1,0 +1,31 @@
+name: Restore MetroPT-3 Project 2 source CSV
+on:
+  push:
+    branches:
+      - feature/metropt3-project2-statistical-analysis
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  restore-csv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore and verify MetroPT-3 CSV
+        run: python project2/prepare_dataset.py
+      - name: Commit verified CSV as project file
+        run: |
+          git config user.name 'NoviCodx'
+          git config user.email 'novicodx@users.noreply.github.com'
+          git add -f project2/metropt3_compressor_sample.csv
+          if git diff --cached --quiet; then
+            echo 'CSV already tracked.'
+          else
+            git commit -m 'Include verified MetroPT-3 research CSV'
+            git push origin HEAD:feature/metropt3-project2-statistical-analysis
+          fi
