@@ -14,4 +14,4 @@ This independent statistical analysis examines authentic sensor measurements fro
 4. Launch Jupyter: `jupyter lab analysis.ipynb`
 5. Run all cells in order. The restored CSV is in the same directory as the notebook.
 
-Methods, statistical interpretations, figures, and scholarly citations are in `Statistical_Analysis_Report.pdf`.
+Methods, statistical interpretations, figures, and scholarly citations are in `module_summary.pdf`.
